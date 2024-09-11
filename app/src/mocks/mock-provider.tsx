@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, use } from "react";
+import { useEffect, useState } from "react";
 
 // ブラウザで実行している場合は、ワーカーを開始
 const mockingEnabledPromise = (mockedApis: string[]) =>
@@ -26,14 +26,8 @@ export const MSWProvider = ({
   children: React.ReactNode;
   mockedApis: string[];
 }>) => {
-  // MSW が有効な場合は、ワーカーが開始するまで待つ必要があるため、
-  //ワーカーの準備が完了するまで、サスペンドする
   return (
-    <Suspense fallback={null}>
-      <MSWProviderWrapper mockedApis={mockedApis}>
-        {children}
-      </MSWProviderWrapper>
-    </Suspense>
+    <MSWProviderWrapper mockedApis={mockedApis}>{children}</MSWProviderWrapper>
   );
 };
 
@@ -44,6 +38,16 @@ function MSWProviderWrapper({
   children: React.ReactNode;
   mockedApis: string[];
 }>) {
-  use(mockingEnabledPromise(mockedApis));
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    mockingEnabledPromise(mockedApis).then(() => {
+      setIsReady(true); // ワーカーの準備が完了したらフラグを立てる
+    });
+  }, [mockedApis]);
+
+  if (!isReady) {
+    return null; // ワーカーが準備できていない間は何も表示しない
+  }
   return children;
 }
