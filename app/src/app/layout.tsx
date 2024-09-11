@@ -33,7 +33,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Provider value={client}>
-          <MSWProvider mockedApis={["users"]}>{children}</MSWProvider>
+          <MSWProvider mockedApis={["user"]}>{children}</MSWProvider>
         </Provider>
       </body>
     </html>
