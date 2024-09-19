@@ -1,13 +1,4 @@
-import { mockModules } from "./modules";
+import { filmsQueryhandler } from "./modules/films";
+import { peopleQueryhandler } from "./modules/people";
 
-type HandlersToRegister = string[];
-
-export const handlers = (mockedApis: HandlersToRegister) => {
-  return mockModules
-    .filter((module) => {
-      return mockedApis.includes(module.name);
-    })
-    .map((module) => {
-      return module.handler;
-    });
-};
+export const handlers = [peopleQueryhandler, filmsQueryhandler];
