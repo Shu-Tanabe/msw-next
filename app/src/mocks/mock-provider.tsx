@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 
 // ブラウザで実行している場合は、ワーカーを開始
-const mockingEnabledPromise = (mockedApis: string[]) =>
+const mockingEnabledPromise = (mockApis: string[]) =>
   typeof window !== "undefined" && process.env.NODE_ENV === "development"
     ? import("@/mocks/browser").then(async ({ worker }) => {
         await worker({
-          mockedApis,
+          mockApis,
         }).start({
           onUnhandledRequest(request, print) {
             if (request.url.includes("_next")) {
@@ -19,32 +19,32 @@ const mockingEnabledPromise = (mockedApis: string[]) =>
       })
     : Promise.resolve();
 
-export const MSWProvider = ({
+export function MSWProvider({
   children,
-  mockedApis,
+  mockApis,
 }: Readonly<{
   children: React.ReactNode;
-  mockedApis: string[];
-}>) => {
+  mockApis: string[];
+}>) {
   return (
-    <MSWProviderWrapper mockedApis={mockedApis}>{children}</MSWProviderWrapper>
+    <MSWProviderWrapper mockApis={mockApis}>{children}</MSWProviderWrapper>
   );
-};
+}
 
 function MSWProviderWrapper({
   children,
-  mockedApis,
+  mockApis,
 }: Readonly<{
   children: React.ReactNode;
-  mockedApis: string[];
+  mockApis: string[];
 }>) {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    mockingEnabledPromise(mockedApis).then(() => {
+    mockingEnabledPromise(mockApis).then(() => {
       setIsReady(true); // ワーカーの準備が完了したらフラグを立てる
     });
-  }, [mockedApis]);
+  }, [mockApis]);
 
   if (!isReady) {
     return null; // ワーカーが準備できていない間は何も表示しない

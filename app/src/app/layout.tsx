@@ -22,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const client = new Client({
-    url: "/graphql",
+    url: "https://swapi-graphql.netlify.app/.netlify/functions/index",
     exchanges: [fetchExchange],
     requestPolicy: "cache-and-network",
     fetchOptions: {
@@ -33,7 +33,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Provider value={client}>
-          <MSWProvider mockedApis={["user"]}>{children}</MSWProvider>
+          <MSWProvider mockApis={["AllPeople"]}>{children}</MSWProvider>
         </Provider>
       </body>
     </html>

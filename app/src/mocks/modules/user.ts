@@ -1,8 +1,9 @@
 import { graphql, HttpResponse } from "msw";
 import type { CombinedError } from "urql";
 import { faker } from "../faker";
+import { notFound } from "./not-found-error";
 
-const API_NAME = "user";
+const API_NAME = "User";
 
 export type User = {
   user: {
@@ -23,7 +24,10 @@ export type UserQueryVariable = {
 
 const userQueryhandler = graphql.query<User, UserQueryVariable>(
   API_NAME,
-  () => {
+  ({ variables }) => {
+    if (variables.id === "not-found") {
+      return notFound(API_NAME);
+    }
     return HttpResponse.json({
       data: {
         user: {
