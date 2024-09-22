@@ -2,12 +2,12 @@ import { mockModules } from "./modules";
 
 type HandlersToRegister = string[];
 
-export const handlers = (mockedApis: HandlersToRegister) => {
+export function handlers(mockApis: HandlersToRegister) {
   return mockModules
     .filter((module) => {
-      return mockedApis.includes(module.name);
+      return mockApis.includes(module.name);
     })
     .map((module) => {
       return module.handler;
     });
-};
+}

@@ -2,9 +2,9 @@ import { setupWorker } from "msw/browser";
 import { handlers } from "./handler";
 
 type Worker = {
-  mockedApis: string[];
+  mockApis: string[];
 };
 
-export const worker = ({ mockedApis }: Worker) => {
-  return setupWorker(...handlers(mockedApis));
-};
+export function worker({ mockApis }: Worker) {
+  return setupWorker(...handlers(mockApis));
+}
