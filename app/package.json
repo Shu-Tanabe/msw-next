@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "msw:init": "npx msw init ./public --no-save"
   },
   "dependencies": {
     "graphql": "^16.9.0",
@@ -25,10 +26,5 @@
     "msw": "^2.4.3",
     "typescript": "^5"
   },
-  "packageManager": "yarn@4.4.1",
-  "msw": {
-    "workerDirectory": [
-      "public"
-    ]
-  }
+  "packageManager": "yarn@4.4.1"
 }
