@@ -1,8 +1,8 @@
 import { HttpResponse } from "msw";
 import { CombinedError } from "urql";
 
-export const notFound = (path: string) =>
-  HttpResponse.json<{ data: null; errors: CombinedError[] }>({
+export const graphqlError = (path: string, code: string) => {
+  return HttpResponse.json<{ data: null; errors: CombinedError[] }>({
     errors: [
       new CombinedError({
         graphQLErrors: [
@@ -15,12 +15,11 @@ export const notFound = (path: string) =>
               },
             ],
             path: [path],
-            extensions: {
-              code: "NOT_FOUND",
-            },
+            extensions: { code },
           },
         ],
       }),
     ],
     data: null,
   });
+};
